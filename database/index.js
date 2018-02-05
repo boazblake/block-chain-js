@@ -1,4 +1,4 @@
-const blockChain = require('./block-chain')
+const blockChain = require('./block-chain-setup')
 const Transactions = require('./transaction-collection')
 const MinedBlocks = require('./mined-blocks')
 

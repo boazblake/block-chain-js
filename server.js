@@ -23,7 +23,7 @@ app.get('/view_transactions', function(req,res) {
 
 app.get('/mine', function(req,res){
     blockChainApi.toMineBlocks()
-    res.send(blockChainApi.mined_blocks)
+    res.end('Transactions are being mined and should be ready soon at /blockchain')
 })
 
 app.get('/blockchain', function(req,res) {    
