@@ -1,2 +1,2 @@
-//serves api to accept posted transactions
+console.log('App started')
 const server = require('./server')

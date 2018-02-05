@@ -1,9 +1,13 @@
 const Block = require('../block')
 const Blockchain = require('../blockchain')
-const genesisBlock = new Block()
 const { log } = require('../helper')
 
-const blockChain = new Blockchain(genesisBlock)
+const genesisBlock = new Block()
+log('~~Genesis Block Successfully created~~')(genesisBlock)
 
-log('the block chain starts gere')(blockChain)
+const nonce = "000"
+
+const blockChain = new Blockchain(genesisBlock, nonce)
+
+log('BLOCK CHAIN')(blockChain)
 module.exports = blockChain

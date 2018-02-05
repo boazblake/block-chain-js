@@ -18,12 +18,12 @@ app.post('/add_transactions', function(req,res) {
 })
 
 app.get('/view_transactions', function(req,res) {
-    res.send(blockChainApi.transactions.coll)
+    res.send({transactions: blockChainApi.transactions.coll})
 })
 
 app.get('/mine', function(req,res){
     blockChainApi.toMineBlocks()
-    res.send(blockChainApi.mined_blocks.coll)
+    res.send(blockChainApi.mined_blocks)
 })
 
 app.get('/blockchain', function(req,res) {    

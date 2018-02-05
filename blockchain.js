@@ -1,40 +1,34 @@
 const Block = require('./block')
-const Transaction = require('./transaction')
-const {log} = require('./helper')
-const genHash = require('./hasher')
-const {prop} = require('ramda')
+const sha256 = require('js-sha256')
+const { toNextBlock, genHash, getNonce } = require('./block-chain-model')
+const { log } = require('./helper')
+const { clone, length  } = require('ramda')
 
 class Blockchain {
-
-  constructor(genesisBlock) {
-    this.blockIndex = 0
-    this.prevHash = ''
+  constructor(genesisBlock, nonce ) {
     this.chain = []
-    this.addGenBlock(genesisBlock)
+    this.prevHash = ''
+    this.nonce = nonce
+    this.genesisBlock = genesisBlock
+    this.addGenBlock(this.genesisBlock)
   }
 
   addGenBlock(block) {
-    log('gen block')(block)
-    block.hash = genHash(block)
+    block.hash = genHash(sha256)(block)(this.nonce)
+    this.prevHash = clone(block.hash)
     delete block.transactions
     delete block.prevHash
-    delete block.nonce
-    this.prevHash = block.hash
-    this.blockIndex ++
     return this.chain.push(block)
   }
 
   makeNextBlock(transactions) {
-    const block = new Block()
-    block.transactions = transactions
-    block.hash = genHash(block)
-    block.prevHash = this.prevHash
-    this.prevHash = block.hash
-    block.index = this.blockIndex
-    this.blockIndex ++
+    const cons = new Block()
+    const nonce_as_a_factor_of = getNonce(this.nonce)(transactions)
+    const block =
+      toNextBlock(cons)(sha256(transactions))(this.prevHash)(length(this.chain))(genHash(sha256)(cons)(nonce_as_a_factor_of))
+    this.prevHash = clone(block.hash)
     return this.chain.push(block)
   }
-
 
 }
 
